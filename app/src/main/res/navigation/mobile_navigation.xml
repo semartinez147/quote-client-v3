@@ -3,23 +3,24 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/mobile_navigation"
-  app:startDestination="@+id/navigation_home">
+  app:startDestination="@+id/navigation_random">
 
     <fragment
-      android:id="@+id/navigation_home"
+      android:id="@+id/navigation_random"
       android:label="@string/title_home"
-      android:name="edu.cnm.deepdive.quoteclient.controller.HomeFragment"
-      tools:layout="@layout/fragment_home"/>
+      android:name="edu.cnm.deepdive.quoteclient.controller.RandomQuoteFragment"
+      tools:layout="@layout/fragment_random_quote"/>
 
     <fragment
-      android:id="@+id/navigation_dashboard"
+      android:id="@+id/navigation_quotes"
       android:label="@string/title_quotes"
-      android:name="edu.cnm.deepdive.quoteclient.controller.DashboardFragment"
-      tools:layout="@layout/fragment_dashboard"/>
+      android:name="edu.cnm.deepdive.quoteclient.controller.QuotesFragment"
+      tools:layout="@layout/fragment_quotes"/>
 
     <fragment
-      android:id="@+id/navigation_notifications"
-      android:label="@string/title_sources"
-      android:name="edu.cnm.deepdive.quoteclient.controller.NotificationsFragment"
-      tools:layout="@layout/fragment_notifications"/>
+      android:id="@+id/navigation_content"
+      android:label="@string/title_content"
+      android:name="edu.cnm.deepdive.quoteclient.controller.ContentFragment"
+      tools:layout="@layout/fragment_content"/>
+
 </navigation>

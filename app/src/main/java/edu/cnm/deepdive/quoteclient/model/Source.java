@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.UUID;
 
-public class Quote implements Content {
+public class Source implements Content {
 
   @Expose
   private UUID id;
@@ -17,10 +17,10 @@ public class Quote implements Content {
   private Date updated;
 
   @Expose
-  private String text;
+  private String name;
 
   @Expose
-  private Source source;
+  private Quote[] quotes;
 
   @Expose
   private URL href;
@@ -49,20 +49,20 @@ public class Quote implements Content {
     this.updated = updated;
   }
 
-  public String getText() {
-    return text;
+  public String getName() {
+    return name;
   }
 
-  public void setText(String text) {
-    this.text = text;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public Source getSource() {
-    return source;
+  public Quote[] getQuotes() {
+    return quotes;
   }
 
-  public void setSource(Source source) {
-    this.source = source;
+  public void setQuotes(Quote[] quotes) {
+    this.quotes = quotes;
   }
 
   public URL getHref() {
