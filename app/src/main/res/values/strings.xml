@@ -1,9 +1,14 @@
 <resources>
   <string name="app_name">QoD</string>
-  <string name="title_home">Random</string>
-  <string name="title_quotes">Quotes</string>
-  <string name="title_content">All</string>
+  <string name="label_home">Home</string>
+  <string name="label_quotes">Quotes</string>
+  <string name="label_sources">By source</string>
+  <string name="title_home">QoD home</string>
+  <string name="title_quotes">All quotes</string>
+  <string name="title_sources">All quotes by source</string>
   <string name="login_failure">Unable to sign in with provided credentials.</string>
   <string name="sign_out">Sign out</string>
   <string name="unattributed_source">(unattributed)</string>
+  <string name="quote_bullet">&#x2022;</string>
+  <string name="attribution_format">&#x2015;%s</string>
 </resources>

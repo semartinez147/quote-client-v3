@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.quoteclient.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,44 +13,54 @@ import edu.cnm.deepdive.quoteclient.R;
 import edu.cnm.deepdive.quoteclient.model.Content;
 import edu.cnm.deepdive.quoteclient.model.Quote;
 import edu.cnm.deepdive.quoteclient.model.Source;
+import edu.cnm.deepdive.quoteclient.view.ContentRecyclerAdapter.ContentHolder;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ContentRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class ContentRecyclerAdapter extends RecyclerView.Adapter<ContentHolder> {
 
   private final Context context;
   private final List<Content> contents;
+  // Map of Content subclasses to Integer layout resource IDs.
   private final Map<Class<? extends Content>, Integer> layouts;
-  private final Map<Integer, Class<? extends ViewHolder>> holders;
+  // Map of Integer layout resource IDs to ContentHolder subclasses.
+  private final Map<Integer, Class<? extends ContentHolder>> holders;
 
+  @SuppressLint("UseSparseArrays")
   public ContentRecyclerAdapter(Context context, List<Content> contents) {
     this.context = context;
     this.contents = contents;
     layouts = new HashMap<>();
     holders = new HashMap<>();
+    // Populate map of Content subclasses to corresponding layout resource IDs.
     layouts.put(Source.class, R.layout.item_content_source);
     layouts.put(Quote.class, R.layout.item_content_quote);
+    // Populate map of layout resource IDs to corresponding ContentHolder subclasses.
     holders.put(R.layout.item_content_source, SourceHolder.class);
     holders.put(R.layout.item_content_quote, QuoteHolder.class);
   }
 
   @Override
   public int getItemViewType(int position) {
+    // Retrieve and return layout resource ID corresponding to Content subclass of item at position.
     return layouts.get(contents.get(position).getClass());
   }
 
   @NonNull
   @Override
-  public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+  public ContentHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     try {
-      Class<? extends ViewHolder> holderClass = holders.get(viewType);
-      Constructor<? extends ViewHolder> constructor = holderClass.getConstructor(View.class);
+      Class<? extends ContentHolder> holderClass = holders.get(viewType);
+      // Non-static inner class constructors have implicit 1st parameter of the enclosing class type.
+      // Use getDeclaredConstructor to return public and non-public constructors.
+      Constructor<? extends ContentHolder> constructor =
+          holderClass.getDeclaredConstructor(ContentRecyclerAdapter.class, View.class);
+      // Inflate layout with resource ID specified by viewType.
       View root = LayoutInflater.from(context).inflate(viewType, parent, false);
-      return constructor.newInstance(root);
+      return constructor.newInstance(this, root);
     } catch (NoSuchMethodException
         | IllegalAccessException
         | InstantiationException
@@ -59,14 +70,8 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
   }
 
   @Override
-  public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-    try {
-      Class<? extends ViewHolder> holderClass = holder.getClass();
-      Method binder = holderClass.getMethod("bind", int.class, Content.class);
-      binder.invoke(holder, position, contents.get(position));
-    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-      throw new RuntimeException(e);
-    }
+  public void onBindViewHolder(@NonNull ContentHolder holder, int position) {
+    holder.bind(contents.get(position));
   }
 
   @Override
@@ -74,7 +79,17 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
     return contents.size();
   }
 
-  private static class SourceHolder extends ViewHolder {
+  abstract static class ContentHolder extends ViewHolder {
+
+    public ContentHolder(@NonNull View itemView) {
+      super(itemView);
+    }
+
+    public abstract void bind(Content content);
+
+  }
+
+  private class SourceHolder extends ContentHolder {
 
     private final TextView sourceName;
 
@@ -83,14 +98,16 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
       sourceName = itemView.findViewById(R.id.source_name);
     }
 
-    public void bind(int position, Content source) {
-      Source s = (Source) source;
-      sourceName.setText((s.getName() != null) ? s.getName() : "(Unattributed)");
+    @Override
+    public void bind(Content content) {
+      Source source = (Source) content;
+      String name = source.getName();
+      sourceName.setText((name != null) ? name : context.getString(R.string.unattributed_source));
     }
 
   }
 
-  private static class QuoteHolder extends ViewHolder {
+  private class QuoteHolder extends ContentHolder {
 
     private final TextView quoteText;
 
@@ -99,14 +116,12 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
       quoteText = itemView.findViewById(R.id.quote_text);
     }
 
-    public void bind(int position, Content quote) {
-      quoteText.setText(((Quote) quote).getText());
+    @Override
+    public void bind(Content content) {
+      Quote quote = (Quote) content;
+      quoteText.setText(quote.getText());
     }
 
   }
 
 }
-
-
-
-

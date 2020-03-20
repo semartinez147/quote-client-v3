@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.quoteclient.controller;
+package edu.cnm.deepdive.quoteclient.viewmodel;
 
 import androidx.lifecycle.Lifecycle.Event;
 import androidx.lifecycle.LifecycleObserver;
@@ -15,7 +15,8 @@ import java.util.List;
 
 public class MainViewModel extends ViewModel implements LifecycleObserver {
 
-  private MutableLiveData<Quote> quote;
+  private MutableLiveData<Quote> random;
+  private MutableLiveData<Quote> daily;
   private MutableLiveData<List<Quote>> quotes;
   private MutableLiveData<List<Content>> contents;
   private final MutableLiveData<Throwable> throwable;
@@ -25,15 +26,23 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
   public MainViewModel() {
     repository = QuoteRepository.getInstance();
     pending = new CompositeDisposable();
-    quote = new MutableLiveData<>();
+    random = new MutableLiveData<>();
+    daily = new MutableLiveData<>();
     quotes = new MutableLiveData<>();
     contents = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
+    refreshDaily();
     refreshRandom();
+    refreshQuotes();
+    refreshContents();
   }
 
-  public LiveData<Quote> getQuote() {
-    return quote;
+  public LiveData<Quote> getRandom() {
+    return random;
+  }
+
+  public LiveData<Quote> getDaily() {
+    return daily;
   }
 
   public LiveData<List<Quote>> getQuotes() {
@@ -54,7 +63,21 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
           pending.add(
               repository.getRandom(account.getIdToken())
                   .subscribe(
-                      quote::postValue,
+                      random::postValue,
+                      throwable::postValue
+                  )
+          );
+        })
+        .addOnFailureListener(throwable::postValue);
+  }
+
+  public void refreshDaily() {
+    GoogleSignInService.getInstance().refresh()
+        .addOnSuccessListener((account) -> {
+          pending.add(
+              repository.getQuoteOfDay(account.getIdToken())
+                  .subscribe(
+                      daily::postValue,
                       throwable::postValue
                   )
           );

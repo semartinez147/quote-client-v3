@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.cnm.deepdive.quoteclient.R;
 import edu.cnm.deepdive.quoteclient.model.Quote;
+import edu.cnm.deepdive.quoteclient.model.Source;
 import edu.cnm.deepdive.quoteclient.view.QuoteRecyclerAdapter.Holder;
 import java.util.List;
 
@@ -68,8 +69,12 @@ public class QuoteRecyclerAdapter extends RecyclerView.Adapter<Holder> {
 
     private void bind(int position, Quote quote) {
       quoteText.setText(quote.getText());
-      quoteSource.setText((quote.getSource() != null)
-          ? quote.getSource().getName() : context.getString(R.string.unattributed_source));
+      Source source = quote.getSource();
+      String name = (source != null) ? source.getName() : null;
+      String attribution = (name != null)
+          ? context.getString(R.string.attribution_format, name)
+          : context.getString(R.string.unattributed_source);
+      quoteSource.setText(attribution);
       // TODO Set any event listeners.
     }
 

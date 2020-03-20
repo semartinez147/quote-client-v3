@@ -5,12 +5,12 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_margin="2dp"
-  app:cardCornerRadius="4dp">
+  app:cardCornerRadius="2dp">
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:padding="8dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
@@ -19,7 +19,7 @@
       android:id="@+id/source_name"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:textStyle="bold"
+      android:textStyle="bold|italic"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintStart_toStartOf="parent"/>
 

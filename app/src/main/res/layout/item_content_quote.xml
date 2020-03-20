@@ -4,25 +4,36 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:layout_margin="2dp"
-  app:cardCornerRadius="4dp">
+  android:layout_marginTop="-4dp"
+  android:layout_marginStart="2dp"
+  android:layout_marginEnd="2dp"
+  android:layout_marginBottom="2dp"
+  app:cardCornerRadius="2dp">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:background="?android:attr/selectableItemBackground"
+    android:orientation="horizontal"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:paddingTop="0dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="8dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="start|top">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/quote_bullet"/>
 
     <TextView
       android:id="@+id/quote_text"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginStart="8dp"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintStart_toStartOf="parent"/>
+      android:layout_marginStart="4dp"/>
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  </LinearLayout>
 
 </androidx.cardview.widget.CardView>

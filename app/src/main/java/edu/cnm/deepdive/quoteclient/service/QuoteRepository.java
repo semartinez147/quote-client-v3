@@ -33,6 +33,11 @@ public class QuoteRepository {
         .subscribeOn(Schedulers.from(networkPool));
   }
 
+  public Single<Quote> getQuoteOfDay(String token) {
+    return proxy.getQuoteOfDay(String.format(OAUTH_HEADER_FORMAT, token))
+        .subscribeOn(Schedulers.from(networkPool));
+  }
+
   public Single<List<Quote>> getAllQuotes(String token) {
     return proxy.getAll(String.format(OAUTH_HEADER_FORMAT, token))
         .subscribeOn(Schedulers.from(networkPool));

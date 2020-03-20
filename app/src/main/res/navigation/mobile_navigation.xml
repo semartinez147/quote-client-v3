@@ -8,7 +8,7 @@
     <fragment
       android:id="@+id/navigation_random"
       android:label="@string/title_home"
-      android:name="edu.cnm.deepdive.quoteclient.controller.RandomQuoteFragment"
+      android:name="edu.cnm.deepdive.quoteclient.controller.HomeFragment"
       tools:layout="@layout/fragment_random_quote"/>
 
     <fragment
@@ -19,8 +19,8 @@
 
     <fragment
       android:id="@+id/navigation_content"
-      android:label="@string/title_content"
-      android:name="edu.cnm.deepdive.quoteclient.controller.ContentFragment"
+      android:label="@string/title_sources"
+      android:name="edu.cnm.deepdive.quoteclient.controller.SourcesFragment"
       tools:layout="@layout/fragment_content"/>
 
 </navigation>
