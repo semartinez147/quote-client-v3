@@ -17,10 +17,12 @@ public class QuoteRecyclerAdapter extends RecyclerView.Adapter<Holder> {
 
   private final Context context;
   private final List<Quote> quotes;
+  private final OnQuoteClickListener listener;
 
-  public QuoteRecyclerAdapter(Context context, List<Quote> quotes) {
+  public QuoteRecyclerAdapter(Context context, List<Quote> quotes, OnQuoteClickListener listener) {
     this.context = context;
     this.quotes = quotes;
+    this.listener = listener;
   }
 
   @NonNull
@@ -42,11 +44,13 @@ public class QuoteRecyclerAdapter extends RecyclerView.Adapter<Holder> {
 
   class Holder extends RecyclerView.ViewHolder {
 
+    private final View clickView;
     private final TextView quoteText;
     private final TextView quoteSource;
 
     private Holder(View root) {
       super(root);
+      clickView = root.findViewById(R.id.click_view);
       quoteText = root.findViewById(R.id.quote_text);
       quoteSource = root.findViewById(R.id.quote_source);
     }
@@ -59,12 +63,17 @@ public class QuoteRecyclerAdapter extends RecyclerView.Adapter<Holder> {
           ? context.getString(R.string.attribution_format, name)
           : context.getString(R.string.unattributed_source);
       quoteSource.setText(attribution);
-      // TODO Set any event listeners.
+      clickView.setOnClickListener((v) ->
+          listener.onQuoteClick(getAdapterPosition(), quote));
     }
 
   }
 
-  // Event listener interface declarations
+  @FunctionalInterface
+  public interface OnQuoteClickListener {
+
+    void onQuoteClick(int position, Quote quote);
+
+  }
 
 }
-

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import edu.cnm.deepdive.quoteclient.model.Content;
 import edu.cnm.deepdive.quoteclient.model.Quote;
 import edu.cnm.deepdive.quoteclient.model.Source;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import java.text.DateFormat;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -60,8 +62,20 @@ public class QuoteRepository {
         .subscribeOn(Schedulers.from(networkPool));
   }
 
-  public Single<Quote> add(String token, Quote quote) {
-    return proxy.post(String.format(OAUTH_HEADER_FORMAT, token), quote)
+  public Completable save(String token, Quote quote) {
+    if (quote.getId() == null) {
+      return Completable.fromSingle(
+          proxy.post(String.format(OAUTH_HEADER_FORMAT, token), quote)
+              .subscribeOn(Schedulers.from(networkPool))
+      );
+    } else {
+      // TODO Invoke PUT.
+      throw new UnsupportedOperationException("Not yet implemented");
+    }
+  }
+
+  public Single<Quote> get(String token, UUID id) {
+    return proxy.get(String.format(OAUTH_HEADER_FORMAT, token), id)
         .subscribeOn(Schedulers.from(networkPool));
   }
 

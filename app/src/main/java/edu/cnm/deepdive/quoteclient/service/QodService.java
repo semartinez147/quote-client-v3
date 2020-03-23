@@ -7,6 +7,7 @@ import edu.cnm.deepdive.quoteclient.model.Quote;
 import edu.cnm.deepdive.quoteclient.model.Source;
 import io.reactivex.Single;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -18,6 +19,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface QodService {
@@ -31,6 +33,9 @@ public interface QodService {
 
   @GET("quotes")
   Single<List<Quote>> getAll(@Header("Authorization") String oauthHeader);
+
+  @GET("quotes/{id}")
+  Single<Quote> get(@Header("Authorization") String oauthHeader, @Path("id") UUID id);
 
   @GET("sources")
   Single<List<Source>> getAllSources(
