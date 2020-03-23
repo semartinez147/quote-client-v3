@@ -19,6 +19,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -43,6 +44,10 @@ public interface QodService {
 
   @POST("quotes")
   Single<Quote> post(@Header("Authorization") String oauthHeader, @Body Quote quote);
+
+  @PUT("quotes/{id}")
+  Single<Quote> put(
+      @Header("Authorization") String oauthHeader, @Body Quote quote, @Path("id") UUID id);
 
   static QodService getInstance() {
     return InstanceHolder.INSTANCE;

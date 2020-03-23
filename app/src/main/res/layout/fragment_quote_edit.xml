@@ -8,15 +8,37 @@
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/source_layout"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      app:hintEnabled="true"
+      app:hintAnimationEnabled="true"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent">
+
+      <AutoCompleteTextView
+        android:id="@+id/source_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/name_of_source"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/quote_layout"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:layout_margin="8dp"
       app:hintEnabled="true"
       app:hintAnimationEnabled="true"
-      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/source_layout"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent">
 
@@ -28,25 +50,6 @@
         android:inputType="textMultiLine"
         android:minLines="1"
         android:maxLines="6"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/source_layout"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      app:hintEnabled="true"
-      app:hintAnimationEnabled="true"
-      app:layout_constraintTop_toBottomOf="@id/quote_layout"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent">
-
-      <AutoCompleteTextView
-        android:id="@+id/source_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="@string/name_of_source"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
