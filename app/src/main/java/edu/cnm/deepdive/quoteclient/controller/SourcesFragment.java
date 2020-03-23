@@ -16,7 +16,6 @@ import edu.cnm.deepdive.quoteclient.viewmodel.MainViewModel;
 public class SourcesFragment extends Fragment {
 
   private RecyclerView contentList;
-  private MainViewModel viewModel;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
       ViewGroup container, Bundle savedInstanceState) {
@@ -28,7 +27,8 @@ public class SourcesFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
+    @SuppressWarnings("ConstantConditions")
+    MainViewModel viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
     viewModel.getContents().observe(getViewLifecycleOwner(), (contents) -> {
       ContentRecyclerAdapter adapter = new ContentRecyclerAdapter(getContext(), contents);
       contentList.setAdapter(adapter);

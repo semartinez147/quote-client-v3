@@ -15,7 +15,6 @@ import edu.cnm.deepdive.quoteclient.viewmodel.MainViewModel;
 
 public class QuotesFragment extends Fragment {
 
-  private MainViewModel viewModel;
   private RecyclerView quotesList;
 
   public View onCreateView(
@@ -28,13 +27,17 @@ public class QuotesFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-      //noinspection ConstantConditions
-      viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
-      viewModel.getQuotes().observe(getViewLifecycleOwner(), (quotes) -> {
-        // TODO Attach any appropriate listeners
-        QuoteRecyclerAdapter adapter = new QuoteRecyclerAdapter(getContext(), quotes);
-        quotesList.setAdapter(adapter);
-      });
+    setupViewModel();
+  }
+
+  private void setupViewModel() {
+    @SuppressWarnings("ConstantConditions")
+    MainViewModel viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
+    viewModel.getQuotes().observe(getViewLifecycleOwner(), (quotes) -> {
+      // TODO Attach any appropriate listeners
+      QuoteRecyclerAdapter adapter = new QuoteRecyclerAdapter(getContext(), quotes);
+      quotesList.setAdapter(adapter);
+    });
   }
 
 }

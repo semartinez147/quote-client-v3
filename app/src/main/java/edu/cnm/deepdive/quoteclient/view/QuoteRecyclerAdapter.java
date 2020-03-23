@@ -15,11 +15,6 @@ import java.util.List;
 
 public class QuoteRecyclerAdapter extends RecyclerView.Adapter<Holder> {
 
-  // Necessary fields for adapting a collection to a RecyclerView:
-  //   - Context
-  //   - Collection
-  //   - Listeners
-
   private final Context context;
   private final List<Quote> quotes;
 
@@ -27,11 +22,6 @@ public class QuoteRecyclerAdapter extends RecyclerView.Adapter<Holder> {
     this.context = context;
     this.quotes = quotes;
   }
-
-  // Overrides of methods to
-  //   - return the number of items in the collection
-  //   - return a holder instance for an inflated layout
-  //   - binds a holder instance to an object at a specified position in the recycler view
 
   @NonNull
   @Override
@@ -50,25 +40,19 @@ public class QuoteRecyclerAdapter extends RecyclerView.Adapter<Holder> {
     return quotes.size();
   }
 
-  // Holder class that
-  //   - Holds an inflated layout
-  //   - Binds a specified object in the collection to the view objects in the inflated layout.
   class Holder extends RecyclerView.ViewHolder {
 
-    private final View root;
-    // More fields for view objects inside root
     private final TextView quoteText;
     private final TextView quoteSource;
 
     private Holder(View root) {
       super(root);
-      this.root = root;
       quoteText = root.findViewById(R.id.quote_text);
       quoteSource = root.findViewById(R.id.quote_source);
     }
 
     private void bind(int position, Quote quote) {
-      quoteText.setText(quote.getText());
+      quoteText.setText(context.getString(R.string.quote_format, quote.getText()));
       Source source = quote.getSource();
       String name = (source != null) ? source.getName() : null;
       String attribution = (name != null)

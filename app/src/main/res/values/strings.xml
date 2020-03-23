@@ -11,4 +11,5 @@
   <string name="unattributed_source">(unattributed)</string>
   <string name="quote_bullet">&#x2022;</string>
   <string name="attribution_format">&#x2015;%s</string>
+  <string name="quote_format">&#8220;%s&#8221;</string>
 </resources>

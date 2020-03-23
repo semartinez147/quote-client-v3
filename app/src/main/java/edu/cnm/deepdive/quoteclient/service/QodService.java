@@ -26,7 +26,8 @@ public interface QodService {
   Single<Quote> getRandom(@Header("Authorization") String oauthHeader);
 
   @GET("quotes/qod")
-  Single<Quote> getQuoteOfDay(@Header("Authorization") String oauthHeader);
+  Single<Quote> getQuoteOfDay(
+      @Header("Authorization") String oauthHeader, @Query("date") String date);
 
   @GET("quotes")
   Single<List<Quote>> getAll(@Header("Authorization") String oauthHeader);

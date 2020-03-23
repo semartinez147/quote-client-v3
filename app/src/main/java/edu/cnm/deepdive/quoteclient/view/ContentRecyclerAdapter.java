@@ -119,7 +119,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter<ContentHolder> 
     @Override
     public void bind(Content content) {
       Quote quote = (Quote) content;
-      quoteText.setText(quote.getText());
+      quoteText.setText(context.getString(R.string.quote_format, quote.getText()));
     }
 
   }

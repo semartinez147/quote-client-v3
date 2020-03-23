@@ -1,12 +1,16 @@
 package edu.cnm.deepdive.quoteclient.service;
 
+import android.annotation.SuppressLint;
 import edu.cnm.deepdive.quoteclient.model.Content;
 import edu.cnm.deepdive.quoteclient.model.Quote;
 import edu.cnm.deepdive.quoteclient.model.Source;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -15,13 +19,17 @@ public class QuoteRepository {
 
   private static final int NETWORK_POOL_SIZE = 10;
   private static final String OAUTH_HEADER_FORMAT = "Bearer %s";
+  private static final String ISO_DATE_FORMAT = "yyyy-MM-dd";
 
   private final QodService proxy;
   private final Executor networkPool;
+  private final DateFormat formatter;
 
+  @SuppressLint("SimpleDateFormat")
   private QuoteRepository() {
     proxy = QodService.getInstance();
     networkPool = Executors.newFixedThreadPool(NETWORK_POOL_SIZE);
+    formatter = new SimpleDateFormat(ISO_DATE_FORMAT);
   }
 
   public static QuoteRepository getInstance() {
@@ -33,8 +41,12 @@ public class QuoteRepository {
         .subscribeOn(Schedulers.from(networkPool));
   }
 
-  public Single<Quote> getQuoteOfDay(String token) {
-    return proxy.getQuoteOfDay(String.format(OAUTH_HEADER_FORMAT, token))
+  public Single<Quote> getQuoteOfToday(String token) {
+    return getQuoteOfDay(token, new Date());
+  }
+
+  public Single<Quote> getQuoteOfDay(String token, Date date) {
+    return proxy.getQuoteOfDay(String.format(OAUTH_HEADER_FORMAT, token), formatter.format(date))
         .subscribeOn(Schedulers.from(networkPool));
   }
 

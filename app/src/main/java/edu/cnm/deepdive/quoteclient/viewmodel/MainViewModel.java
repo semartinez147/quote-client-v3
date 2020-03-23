@@ -32,7 +32,6 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
     contents = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     refreshDaily();
-    refreshRandom();
     refreshQuotes();
     refreshContents();
   }
@@ -58,6 +57,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
   }
 
   public void refreshRandom() {
+    throwable.setValue(null);
     GoogleSignInService.getInstance().refresh()
         .addOnSuccessListener((account) -> {
           pending.add(
@@ -72,10 +72,11 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
   }
 
   public void refreshDaily() {
+    throwable.setValue(null);
     GoogleSignInService.getInstance().refresh()
         .addOnSuccessListener((account) -> {
           pending.add(
-              repository.getQuoteOfDay(account.getIdToken())
+              repository.getQuoteOfToday(account.getIdToken())
                   .subscribe(
                       daily::postValue,
                       throwable::postValue
@@ -86,6 +87,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
   }
 
   public void refreshQuotes() {
+    throwable.setValue(null);
     GoogleSignInService.getInstance().refresh()
         .addOnSuccessListener((account) -> {
           pending.add(
@@ -100,6 +102,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
   }
 
   public void refreshContents() {
+    throwable.setValue(null);
     GoogleSignInService.getInstance().refresh()
         .addOnSuccessListener((account) -> {
           pending.add(

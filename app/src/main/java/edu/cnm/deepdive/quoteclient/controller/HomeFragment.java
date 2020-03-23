@@ -9,23 +9,22 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import edu.cnm.deepdive.quoteclient.R;
+import edu.cnm.deepdive.quoteclient.model.Quote;
 import edu.cnm.deepdive.quoteclient.viewmodel.MainViewModel;
 
 public class HomeFragment extends Fragment {
 
   private MainViewModel viewModel;
-  private TextView dailyText;
-  private TextView dailySource;
-  private TextView randomText;
-  private TextView randomSource;
+  private TextView quoteText;
+  private TextView sourceName;
 
+  @Override
   public View onCreateView(@NonNull LayoutInflater inflater,
       ViewGroup container, Bundle savedInstanceState) {
-    View root = inflater.inflate(R.layout.fragment_random_quote, container, false);
-    randomText = root.findViewById(R.id.quote_text);
-    randomSource = root.findViewById(R.id.quote_source);
-    root.setOnClickListener((view) -> viewModel.refreshRandom());
+    View root = inflater.inflate(R.layout.fragment_home, container, false);
+    setupView(root);
     return root;
   }
 
@@ -34,11 +33,24 @@ public class HomeFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     //noinspection ConstantConditions
     viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
-    viewModel.getRandom().observe(getViewLifecycleOwner(), (quote) -> {
-      randomText.setText(quote.getText());
-      randomSource.setText((quote.getSource() != null)
-          ? quote.getSource().getName() : getString(R.string.unattributed_source));
-    });
+    viewModel.getRandom().observe(getViewLifecycleOwner(), this::presentQuote);
+    viewModel.getDaily().observe(getViewLifecycleOwner(), this::presentQuote);
+  }
+
+  private void setupView(View root) {
+    quoteText = root.findViewById(R.id.quote_text);
+    sourceName = root.findViewById(R.id.source_name);
+    FloatingActionButton getRandom = root.findViewById(R.id.get_random);
+    FloatingActionButton getToday = root.findViewById(R.id.get_today);
+    getRandom.setOnClickListener((v) -> viewModel.refreshRandom());
+    getToday.setOnClickListener((v) -> viewModel.refreshDaily());
+  }
+
+  private void presentQuote(Quote quote) {
+    quoteText.setText(getString(R.string.quote_format, quote.getText()));
+    sourceName.setText((quote.getSource() != null)
+        ? getString(R.string.attribution_format, quote.getSource().getName())
+        : getString(R.string.unattributed_source));
   }
 
 }

@@ -1,38 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:layout_marginTop="-4dp"
-  android:layout_marginStart="2dp"
-  android:layout_marginEnd="2dp"
-  android:layout_marginBottom="2dp"
-  app:cardCornerRadius="2dp">
+  style="@style/ListItemContainer.Child">
 
   <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    style="@style/ListItemLayout.Child"
     android:clickable="true"
-    android:focusable="true"
-    android:paddingTop="0dp"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp"
-    android:paddingBottom="8dp"
-    android:background="?android:attr/selectableItemBackground"
-    android:gravity="start|top">
+    android:focusable="true">
 
     <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      style="@style/ListItemText.Quote"
       android:text="@string/quote_bullet"/>
 
     <TextView
       android:id="@+id/quote_text"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="4dp"/>
+      style="@style/ListItemText.Quote.Child"/>
 
   </LinearLayout>
 
