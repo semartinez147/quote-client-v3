@@ -1,0 +1,6 @@
+edu.cnm.deepdive.quoteclient
+edu.cnm.deepdive.quoteclient.controller
+edu.cnm.deepdive.quoteclient.model
+edu.cnm.deepdive.quoteclient.service
+edu.cnm.deepdive.quoteclient.view
+edu.cnm.deepdive.quoteclient.viewmodel
