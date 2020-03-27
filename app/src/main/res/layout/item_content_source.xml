@@ -5,9 +5,7 @@
   style="@style/ListItemContainer">
 
   <androidx.constraintlayout.widget.ConstraintLayout
-    style="@style/ListItemLayout"
-    android:clickable="true"
-    android:focusable="true">
+    style="@style/ListItemLayout">
 
     <TextView
       android:id="@+id/source_name"

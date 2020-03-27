@@ -18,4 +18,6 @@
   <string name="text_of_quote">Text of quote</string>
   <string name="name_of_source">Name of source</string>
   <string name="quote_details_title">Quote details</string>
+  <string name="context_edit">Edit</string>
+  <string name="context_delete">Delete</string>
 </resources>

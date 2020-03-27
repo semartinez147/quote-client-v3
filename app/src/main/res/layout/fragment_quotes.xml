@@ -5,7 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   style="@style/Screen.List">
 
-  <androidx.recyclerview.widget.RecyclerView
+  <edu.cnm.deepdive.quoteclient.view.ContextMenuRecyclerView
     android:id="@+id/quotes_list"
     android:layout_width="0dp"
     android:layout_height="0dp"

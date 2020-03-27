@@ -121,7 +121,7 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
     GoogleSignInService.getInstance().refresh()
         .addOnSuccessListener((account) -> {
           pending.add(
-              repository.getAllSources(account.getIdToken(), false)
+              repository.getAllSources(account.getIdToken(), false, true)
                   .subscribe(
                       sources::postValue,
                       throwable::postValue
@@ -159,6 +159,26 @@ public class MainViewModel extends ViewModel implements LifecycleObserver {
                         refreshContents();
                         refreshQuotes();
                         refreshSources();
+                      },
+                      throwable::postValue
+                  )
+          );
+        })
+        .addOnFailureListener(throwable::postValue);
+  }
+
+  public void remove(Quote quote) {
+    throwable.setValue(null);
+    GoogleSignInService.getInstance().refresh()
+        .addOnSuccessListener((account) -> {
+          pending.add(
+              repository.remove(account.getIdToken(), quote)
+                  .subscribe(
+                      () -> {
+                        this.quote.postValue(null);
+                        refreshDaily();
+                        refreshContents();
+                        refreshQuotes();
                       },
                       throwable::postValue
                   )

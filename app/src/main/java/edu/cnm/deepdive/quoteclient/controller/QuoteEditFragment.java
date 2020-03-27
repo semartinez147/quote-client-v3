@@ -3,19 +3,21 @@ package edu.cnm.deepdive.quoteclient.controller;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import edu.cnm.deepdive.quoteclient.R;
 import edu.cnm.deepdive.quoteclient.model.Quote;
@@ -24,11 +26,12 @@ import edu.cnm.deepdive.quoteclient.viewmodel.MainViewModel;
 import java.util.List;
 import java.util.UUID;
 
-public class QuoteEditFragment extends DialogFragment {
+public class QuoteEditFragment extends DialogFragment implements TextWatcher {
 
   private static final String ID_KEY = "id";
 
   private UUID id;
+  private AlertDialog dialog;
   private View root;
   private MainViewModel viewModel;
   private EditText quoteText;
@@ -36,14 +39,15 @@ public class QuoteEditFragment extends DialogFragment {
   private List<Source> sources;
   private Quote quote;
 
-  public static QuoteEditFragment newInstance(UUID id) {
+  public static void createAndShow(FragmentManager manager, UUID id) {
     QuoteEditFragment fragment = new QuoteEditFragment();
     Bundle args = new Bundle();
     args.putSerializable(ID_KEY, id);
     fragment.setArguments(args);
-    return fragment;
+    fragment.show(manager, QuoteEditFragment.class.getName());
   }
 
+  @SuppressWarnings("ConstantConditions")
   @SuppressLint("InflateParams")
   @NonNull
   @Override
@@ -58,22 +62,26 @@ public class QuoteEditFragment extends DialogFragment {
     sourceName = root.findViewById(R.id.source_name);
     quoteText.setText("");
     sourceName.setText("");
-    //noinspection ConstantConditions
-    return new Builder(getContext())
+    quoteText.addTextChangedListener(this);
+    sourceName.addTextChangedListener(this);
+    dialog = new Builder(getContext())
         .setIcon(R.drawable.ic_message_black_24dp)
         .setTitle(R.string.quote_details_title)
         .setView(root)
         .setPositiveButton(android.R.string.ok, (dlg, which) -> save())
         .setNegativeButton(android.R.string.cancel, (dlg, which) -> {})
         .create();
+    dialog.setOnShowListener((dlg) -> checkSubmitConditions());
+    return dialog;
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return root;
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -100,6 +108,17 @@ public class QuoteEditFragment extends DialogFragment {
     }
   }
 
+  @Override
+  public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+  @Override
+  public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+  @Override
+  public void afterTextChanged(Editable s) {
+    checkSubmitConditions();
+  }
+
   private void save() {
     quote.setText(quoteText.getText().toString().trim());
     Source source = null;
@@ -118,6 +137,12 @@ public class QuoteEditFragment extends DialogFragment {
     }
     quote.setSource(source);
     viewModel.save(quote);
+  }
+
+  private void checkSubmitConditions() {
+    Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+    positive.setEnabled(!quoteText.getText().toString().trim().isEmpty()
+        && !sourceName.getText().toString().trim().isEmpty());
   }
 
 }

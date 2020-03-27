@@ -24,15 +24,18 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter<ContentHolder> 
 
   private final Context context;
   private final List<Content> contents;
+  private final OnQuoteClickListener listener;
   // Map of Content subclasses to Integer layout resource IDs.
   private final Map<Class<? extends Content>, Integer> layouts;
   // Map of Integer layout resource IDs to ContentHolder subclasses.
   private final Map<Integer, Class<? extends ContentHolder>> holders;
 
   @SuppressLint("UseSparseArrays")
-  public ContentRecyclerAdapter(Context context, List<Content> contents) {
+  public ContentRecyclerAdapter(Context context, List<Content> contents,
+      OnQuoteClickListener listener) {
     this.context = context;
     this.contents = contents;
+    this.listener = listener;
     layouts = new HashMap<>();
     holders = new HashMap<>();
     // Populate map of Content subclasses to corresponding layout resource IDs.
@@ -79,6 +82,13 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter<ContentHolder> 
     return contents.size();
   }
 
+  @FunctionalInterface
+  public interface OnQuoteClickListener {
+
+    void onQuoteClick(int position, Quote quote);
+
+  }
+
   abstract static class ContentHolder extends ViewHolder {
 
     public ContentHolder(@NonNull View itemView) {
@@ -120,6 +130,8 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter<ContentHolder> 
     public void bind(Content content) {
       Quote quote = (Quote) content;
       quoteText.setText(context.getString(R.string.quote_format, quote.getText()));
+      itemView.setOnClickListener((v) -> listener.onQuoteClick(getAdapterPosition(), quote));
+      itemView.setTag(quote);
     }
 
   }

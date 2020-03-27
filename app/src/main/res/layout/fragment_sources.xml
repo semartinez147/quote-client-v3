@@ -5,7 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   style="@style/Screen.List">
 
-  <androidx.recyclerview.widget.RecyclerView
+  <edu.cnm.deepdive.quoteclient.view.ContextMenuRecyclerView
     android:id="@+id/content_list"
     android:layout_width="0dp"
     android:layout_height="0dp"
@@ -15,5 +15,12 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     tools:listitem="@layout/item_content_source"/>
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/add_quote"
+    style="@style/FloatingAction"
+    android:src="@drawable/ic_add"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

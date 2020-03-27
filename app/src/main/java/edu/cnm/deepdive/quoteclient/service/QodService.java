@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import edu.cnm.deepdive.quoteclient.BuildConfig;
 import edu.cnm.deepdive.quoteclient.model.Quote;
 import edu.cnm.deepdive.quoteclient.model.Source;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -26,28 +28,33 @@ import retrofit2.http.Query;
 public interface QodService {
 
   @GET("quotes/random")
-  Single<Quote> getRandom(@Header("Authorization") String oauthHeader);
+  Single<Quote> getRandomQuote(@Header("Authorization") String oauthHeader);
 
   @GET("quotes/qod")
   Single<Quote> getQuoteOfDay(
       @Header("Authorization") String oauthHeader, @Query("date") String date);
 
   @GET("quotes")
-  Single<List<Quote>> getAll(@Header("Authorization") String oauthHeader);
+  Single<List<Quote>> getAllQuotes(@Header("Authorization") String oauthHeader);
 
   @GET("quotes/{id}")
-  Single<Quote> get(@Header("Authorization") String oauthHeader, @Path("id") UUID id);
+  Single<Quote> getQuote(@Header("Authorization") String oauthHeader, @Path("id") UUID id);
 
   @GET("sources")
   Single<List<Source>> getAllSources(
-      @Header("Authorization") String oauthHeader, @Query("includeNull") boolean includeNull);
+      @Header("Authorization") String oauthHeader,
+      @Query("includeNull") boolean includeNull, @Query("includeEmpty") boolean includeEmpty);
 
   @POST("quotes")
-  Single<Quote> post(@Header("Authorization") String oauthHeader, @Body Quote quote);
+  Single<Quote> postQuote(@Header("Authorization") String oauthHeader, @Body Quote quote);
 
   @PUT("quotes/{id}")
-  Single<Quote> put(
+  Single<Quote> putQuote(
       @Header("Authorization") String oauthHeader, @Body Quote quote, @Path("id") UUID id);
+
+  @DELETE("quotes/{id}")
+  Completable deleteQuote(
+      @Header("Authorization") String oauthHeader, @Path("id") UUID id);
 
   static QodService getInstance() {
     return InstanceHolder.INSTANCE;

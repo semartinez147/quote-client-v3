@@ -2,13 +2,13 @@
 <androidx.cardview.widget.CardView
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  style="@style/ListItemContainer">
+  style="@style/ListItemContainer"
+  android:clickable="true"
+  android:focusable="true"
+  android:longClickable="true">
 
   <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/click_view"
-    style="@style/ListItemLayout"
-    android:clickable="true"
-    android:focusable="true">
+    style="@style/ListItemLayout">
 
     <TextView
       android:id="@+id/quote_text"

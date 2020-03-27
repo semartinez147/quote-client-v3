@@ -39,7 +39,7 @@ public class QuoteRepository {
   }
 
   public Single<Quote> getRandom(String token) {
-    return proxy.getRandom(String.format(OAUTH_HEADER_FORMAT, token))
+    return proxy.getRandomQuote(String.format(OAUTH_HEADER_FORMAT, token))
         .subscribeOn(Schedulers.from(networkPool));
   }
 
@@ -53,36 +53,46 @@ public class QuoteRepository {
   }
 
   public Single<List<Quote>> getAllQuotes(String token) {
-    return proxy.getAll(String.format(OAUTH_HEADER_FORMAT, token))
+    return proxy.getAllQuotes(String.format(OAUTH_HEADER_FORMAT, token))
         .subscribeOn(Schedulers.from(networkPool));
   }
 
-  public Single<List<Source>> getAllSources(String token, boolean includeNull) {
-    return proxy.getAllSources(String.format(OAUTH_HEADER_FORMAT, token), includeNull)
+  public Single<List<Source>> getAllSources(
+      String token, boolean includeNull, boolean includeEmpty) {
+    return proxy.getAllSources(String.format(OAUTH_HEADER_FORMAT, token), includeNull, includeEmpty)
         .subscribeOn(Schedulers.from(networkPool));
   }
 
   public Completable save(String token, Quote quote) {
     if (quote.getId() == null) {
       return Completable.fromSingle(
-          proxy.post(String.format(OAUTH_HEADER_FORMAT, token), quote)
+          proxy.postQuote(String.format(OAUTH_HEADER_FORMAT, token), quote)
               .subscribeOn(Schedulers.from(networkPool))
       );
     } else {
       return Completable.fromSingle(
-          proxy.put(String.format(OAUTH_HEADER_FORMAT, token), quote, quote.getId())
+          proxy.putQuote(String.format(OAUTH_HEADER_FORMAT, token), quote, quote.getId())
               .subscribeOn(Schedulers.from(networkPool))
       );
     }
   }
 
+  public Completable remove(String token, Quote quote) {
+    if (quote.getId() != null) {
+      return proxy.deleteQuote(String.format(OAUTH_HEADER_FORMAT, token), quote.getId())
+              .subscribeOn(Schedulers.from(networkPool));
+    } else {
+      return Completable.complete();
+    }
+  }
+
   public Single<Quote> get(String token, UUID id) {
-    return proxy.get(String.format(OAUTH_HEADER_FORMAT, token), id)
+    return proxy.getQuote(String.format(OAUTH_HEADER_FORMAT, token), id)
         .subscribeOn(Schedulers.from(networkPool));
   }
 
   public Single<List<Content>> getAllContent(String token) {
-    return getAllSources(token, true)
+    return getAllSources(token, true, false)
         .subscribeOn(Schedulers.io())
         .map((sources) -> {
           List<Content> combined = new ArrayList<>();

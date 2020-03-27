@@ -31,10 +31,12 @@
   </style>
 
   <style name="FeaturedQuote.Text">
+    <item name="android:textColor">@color/colorPrimaryDark</item>
     <item name="android:textSize">24sp</item>
   </style>
 
   <style name="FeaturedQuote.Source">
+    <item name="android:textColor">@color/colorPrimary</item>
     <item name="android:textSize">20sp</item>
     <item name="android:textStyle">italic</item>
   </style>
@@ -97,6 +99,27 @@
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="useCompatPadding">true</item>
+  </style>
+
+  <style name="EditContainer" parent="AppTheme">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:padding">@dimen/edit_container_padding</item>
+  </style>
+
+  <style name="EditItem" parent="AppTheme">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_margin">@dimen/edit_item_margin</item>
+  </style>
+
+  <style name="EditItem.Nested">
+    <item name="android:layout_margin">0dp</item>
+  </style>
+
+  <style name="EditItem.Nested.Multiline">
+    <item name="android:minLines">@integer/multiline_min_lines</item>
+    <item name="android:maxLines">@integer/multiline_max_lines</item>
   </style>
 
 </resources>

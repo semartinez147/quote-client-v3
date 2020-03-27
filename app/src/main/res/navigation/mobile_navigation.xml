@@ -21,6 +21,6 @@
       android:id="@+id/navigation_content"
       android:label="@string/title_sources"
       android:name="edu.cnm.deepdive.quoteclient.controller.SourcesFragment"
-      tools:layout="@layout/fragment_content"/>
+      tools:layout="@layout/fragment_sources"/>
 
 </navigation>
